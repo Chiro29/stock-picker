@@ -1,9 +1,11 @@
-def generate_array(n) 
+def generate_array(n, min, max) 
   array = Array.new(n.to_i)
+  min = min.to_i
+  max = max.to_i
   random_stock = Random.new
 
   array.each do |day|
-    array[array.index(day)] = random_stock.rand(1..1001)
+    array[array.index(day)] = random_stock.rand(min..max)
   end
 end
 
@@ -40,15 +42,31 @@ def stock_picker(array)
 end
 
 loop do
-  puts "Choose how many days you want to have for the stock picking that will be generated\nIt will show you the best day to buy, to sell and the profit"
+  puts "Choose how many days you want to have for the stock picking that will be generated\nIt will show you the best day to buy, to sell and the profit\nThe lowest value you can put is 10 and the highest value is 1000"
   days = gets.chomp
 
-  until days.match?(/\A\d+\z/) do
-    puts "To choose a number of days, insert numbers only"
+  until days.match?(/\A\d+\z/) && (days.to_i).between?(10, 1000) do
+    puts "To choose a number of days, insert numbers only between 10 and 1000"
     days = gets.chomp
   end
 
-  stock = generate_array(days)
+  puts "Choose the minimum value that a stock can have\nThe lowest value you can put is 1 and the highest value is 100"
+  min = gets.chomp
+
+  until min.match?(/\A\d+\z/) && (min.to_i).between?(1, 100) do
+    puts "Insert numbers only between 1 and 100"
+    min = gets.chomp
+  end
+
+  puts "Choose the maximum value that a stock can have\nThe lowest value you can put is #{min.to_i + 20} and the highest value is 1000"
+  max = gets.chomp
+
+  until max.match?(/\A\d+\z/) && (max.to_i).between?(min.to_i + 20, 1000) do
+    puts "Insert numbers only between #{min.to_i + 20} and 1000"
+    max = gets.chomp
+  end
+
+  stock = generate_array(days, min, max)
   print "This show the value of the stock each day:\n#{stock}\n"
 
   stock_picker(stock)
