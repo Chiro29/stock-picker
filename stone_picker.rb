@@ -1,4 +1,11 @@
-stock = [17, 3, 6, 9, 15, 8, 6, 1, 10]
+def generate_array(n) 
+  array = Array.new(n.to_i)
+  random_stock = Random.new
+
+  array.each do |day|
+    array[array.index(day)] = random_stock.rand(1..1001)
+  end
+end
 
 def stock_picker(array)
   best_buy = 0
@@ -40,6 +47,9 @@ loop do
     puts "To choose a number of days, insert numbers only"
     days = gets.chomp
   end
+
+  stock = generate_array(days)
+  print "This show the value of the stock each day:\n#{stock}\n"
 
   stock_picker(stock)
 
